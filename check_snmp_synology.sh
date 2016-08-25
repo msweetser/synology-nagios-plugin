@@ -260,7 +260,11 @@ else
     fi
 
     #Check system temperature
-    if [ "$temperature" -gt "$warningTemperature" ] ; then
+    #Check if the OID exists, as it is not populated on certain
+    #Synology models.
+    if [ "$temperature" == "No Such Instance currently exists at this OID" ] ; then
+        temperature="$temperature (UNKNOWN)"
+    elif [ "$temperature" -gt "$warningTemperature" ] ; then
         if [ "$temperature" -gt "$criticalTemperature" ] ; then
             temperature="$temperature (CRITICAL)"
             healthCriticalStatus=1
